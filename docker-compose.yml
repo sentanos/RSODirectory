@@ -1,0 +1,25 @@
+version: "3"
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+  mongo-seed:
+    image: mongo-seed
+    depends_on:
+      - mongo
+    deploy:
+      restart_policy:
+        condition: on-failure 
+  api:
+    image: rso-api
+    ports:
+      - "3081:3081"
+    depends_on:
+      - mongo
+  next:
+    image: rso-next
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
