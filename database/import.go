@@ -11,9 +11,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const connStr = "mongodb://localhost:27017"
-const csvFile = "../datascrape/rso-data-utf8.csv"
-
 type rso struct {
 	Name string
 	Description string
@@ -22,6 +19,18 @@ type rso struct {
 }
 
 func main() {
+	if len(os.Args) <= 1 {
+		log.Fatal("Please csv file followed by connection string")
+		return
+	}
+	file, err := os.Open(os.Args[1])
+	defer file.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	connStr := os.Args[2]
+
 	opts := options.Client().ApplyURI(connStr)
 	client, err := mongo.Connect(context.TODO(), opts)
 
@@ -38,10 +47,6 @@ func main() {
 
 	fmt.Println("Connected to database")
 
-	file, err := os.Open(csvFile)
-	if err != nil {
-		log.Fatal(err)
-	}
 	reader := csv.NewReader(file)
 	records, err := reader.ReadAll()
 	if err != nil {
