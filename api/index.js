@@ -15,7 +15,7 @@ app.get('/rsos', async (req, res) => {
   res.json(rows);
 });
 
-app.get('/rsos/search', async (req, res, next) => {
+app.get('/rsos/search', async (req, res) => {
   const search = req.query.query;
   const rows = await db.collection('rsos').find({
       $or: [
