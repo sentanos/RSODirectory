@@ -1,0 +1,82 @@
+swagger: "2.0"
+info:
+  description: ""
+  version: "1.0.0"
+  title: "RSO Directory API"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:3081"
+tags:
+- name: "rso"
+  description: "Everything about RSO information"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+schemes:
+- "https"
+- "http"
+paths:
+  /rsos:
+    get:
+      tags:
+      - "rso"
+      summary: "Gets 20 rsos"
+      description: ""
+      operationId: "rsos"
+      produces:
+      - "application/json"
+      responses:
+        405:
+          description: "Invalid input"
+  /rsos/search:
+    get:
+      tags:
+      - "rso"
+      summary: "Searches for RSOs matching given query"
+      description: ""
+      operationId: "searchRso"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "search"
+        in: "query"
+        type: "string"
+        required: true
+        description: "term to search for"
+      responses:
+        200:
+          description: "A"
+  /rsos/category:
+    get:
+      tags:
+      - "rso"
+      summary: "Gets RSOs matching the given category"
+      description: "todo: accept multiple categories"
+      operationId: "categoryRso"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "category"
+        type: "string"
+        required: true
+        description: "category of the RSOs to return. Valid categories found through rsos/allcategories"
+      responses:
+        200:
+          description: "A"
+  /rsos/allcategories:
+    get:
+      tags:
+        - "rso"
+      summary: "Gets a list of all valid categories"
+      description: "gets a list of categories that can be used for /rsos/category"
+      operationId: "allCategories"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "A"

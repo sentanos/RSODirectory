@@ -30,6 +30,20 @@ app.get('/rsos/search', async (req, res) => {
   res.json(rows);
 });
 
+// takes query params: category 
+app.get('/rsos/category', async (req, res) => {
+  var category = req.query.category;
+  var query = { category: category };
+  const rows = await db.collection('rsos').find(query).toArray();
+  res.json(rows);
+});
+
+// gets all the valid categories and returns them
+app.get('/rsos/allcategories', async (req, res) => {
+  const rows = await db.collection('rsos').distinct('category').toArray();
+  res.json(rows);
+});
+
 (async () => {
   db = await mongo();
   app.listen(3081);
