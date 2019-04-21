@@ -13,9 +13,6 @@ host: "localhost:3081"
 tags:
 - name: "rso"
   description: "Everything about RSO information"
-  externalDocs:
-    description: "Find out more"
-    url: "http://swagger.io"
 schemes:
 - "https"
 - "http"
@@ -24,13 +21,38 @@ paths:
     get:
       tags:
       - "rso"
-      summary: "Gets 20 rsos"
+      summary: "Gets rsos"
       description: ""
       operationId: "rsos"
       produces:
       - "application/json"
+      parameters:
+        - name: "limit"
+          in: "query"
+          type: "integer"
+          format: "int64"
+          required: false
+          description: "The maximum number of RSOs to return. Defaults to 20. Cannot be
+          greater than 100 and cannot be less than 1."
+        - name: "offset"
+          in: "query"
+          type: "integer"
+          format: "int64"
+          required: false
+          description: "The number of RSOs to skip"
+        - name: "query"
+          in: "query"
+          type: "string"
+          required: false
+          description: "Search for RSOs by a given string"
       responses:
-        405:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/RSO"
+        400:
           description: "Invalid input"
   /rsos/search:
     get:
@@ -49,7 +71,7 @@ paths:
         description: "term to search for"
       responses:
         200:
-          description: "A"
+          description: "Success"
   /rsos/category:
     get:
       tags:
@@ -67,11 +89,11 @@ paths:
         description: "category of the RSOs to return. Valid categories found through rsos/allcategories"
       responses:
         200:
-          description: "A"
+          description: "Success"
   /rsos/allcategories:
     get:
       tags:
-        - "rso"
+      - "rso"
       summary: "Gets a list of all valid categories"
       description: "gets a list of categories that can be used for /rsos/category"
       operationId: "allCategories"
@@ -79,4 +101,37 @@ paths:
       - "application/json"
       responses:
         200:
-          description: "A"
+          description: "Success"
+definitions:
+  RSO:
+    type: "object"
+    required:
+    - "_id"
+    - "name"
+    - "description"
+    - "category"
+    - "logoUrl"
+    properties:
+      _id:
+        type: "string"
+      name:
+        type: "string"
+      description:
+        type: "string"
+      category:
+        type: "string"
+      logoUrl:
+        type: "string"
+  RSOs:
+    type: "object"
+    properties:
+      total:
+        type: integer
+        format: int64
+      rsos:
+        type: array
+        items:
+          $ref: "#/definitions/RSO"
+
+
+
